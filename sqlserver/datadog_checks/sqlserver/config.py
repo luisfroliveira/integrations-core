@@ -133,22 +133,15 @@ class SQLServerConfig:
             return re.compile(r'(?!x)x')
 
     def _build_tags(self, custom_tags, propagate_agent_tags):
-        # Clean up tags in case there was a None entry in the instance
-        # e.g. if the yaml contains tags: but no actual tags
-        if custom_tags is None:
-            tags = []
-        else:
-            tags = custom_tags
-
         if propagate_agent_tags:
             try:
                 agent_tags = get_agent_host_tags()
-                tags.extend(agent_tags)
+                custom_tags.extend(agent_tags)
             except Exception as e:
                 raise ConfigurationError(
                     'propagate_agent_tags enabled but there was an error fetching agent tags {}'.format(e)
                 )
-        return tags
+        return custom_tags
 
     @staticmethod
     def _should_propagate_agent_tags(instance, init_config) -> bool:
