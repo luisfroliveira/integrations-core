@@ -290,3 +290,5 @@ def create_deadlock(bob_conn, fred_conn):
     exception_2_text = futures_second_query.result()
     executor.shutdown()
     return "deadlock" in exception_1_text or "deadlock" in exception_2_text
+
+
